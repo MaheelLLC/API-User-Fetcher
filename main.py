@@ -6,7 +6,7 @@ def fetch_users(api_url : str) -> list | dict | Any:
         # Notify ongoing api connection
         print("Connecting to JSONPlaceholder...")
         # retrieve the user data from the api endpoint
-        response = requests.get(api_url)
+        response = requests.get(api_url, timeout=5)
         # check if it was successful
         response.raise_for_status()
         print("Successfully retrieved 10 users!")
