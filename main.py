@@ -1,7 +1,6 @@
 import requests
-from typing import Any
 
-def fetch_users(api_url : str) -> list | dict | Any:
+def fetch_users(api_url : str) -> list[dict] | None:
     try:
         # Notify ongoing api connection
         print("Connecting to JSONPlaceholder...")
@@ -15,13 +14,10 @@ def fetch_users(api_url : str) -> list | dict | Any:
         return parsed
     except requests.exceptions.Timeout as timeout:
         print(f"Request timed out: {timeout}")
-    except requests.exceptions.RequestException as e:
-        print(f"Failed request: {e}")
     except requests.exceptions.JSONDecodeError as e:
         print(f"Failed to parse JSON: {e}")
-    except Exception as e:
-        print(f"{e}")
-        raise Exception
+    except requests.exceptions.RequestException as e:
+        print(f"Failed request: {e}")
 
 def process_users(users: list) -> list:
     if not users:
@@ -30,20 +26,21 @@ def process_users(users: list) -> list:
     
     new_users = []
     for user in users:
-        if "address" not in users or "city" not in users["address"]:
+        if "address" not in user or "city" not in user["address"]:
             print("User has no address or city.")
             new_users.append({
                 "name" : user["name"],
                 "username" : user["username"],
-                "email" : user["email"]
+                "email" : user["email"],
+                "city" : "Unknown"
             })
-
-        new_users.append({
-            "name" : user["name"],
-            "username" : user["username"],
-            "email" : user["email"],
-            "city" : user["address"]["city"]
-        })
+        else:
+            new_users.append({
+                "name" : user["name"],
+                "username" : user["username"],
+                "email" : user["email"],
+                "city" : user["address"]["city"]
+            })
 
     return new_users
 
@@ -64,7 +61,13 @@ def display_users(users: list) -> None:
 
 def main():
     api_endpoint = "https://jsonplaceholder.typicode.com/users"
+
     users = fetch_users(api_endpoint)
+
+    if users is None:
+        print("Unable to retrieve users. Exiting application.")
+        return
+    
     processed = process_users(users)
     display_users(processed)
 

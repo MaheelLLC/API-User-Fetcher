@@ -4,7 +4,7 @@
 This application retrieves data for 10 users from JSONPlaceholder. Then, it reformats the user data into only containing the user's name, username, email, and city.
 
 ### Requirements
-- Python 3.13 and pip installed
+- Python 3.12+ and pip installed
 - Created Python venv called venv
 - Requests library installed in venv
 
