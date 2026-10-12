@@ -30,11 +30,25 @@ def process_users(users: list) -> list:
     return new_users
 
 def display_users(users: list) -> None:
-    header = """============================\n        API USER FETCHER        \n============================"""
-    print()
+    header = "=================================\n        API USER FETCHER        \n================================="
+    print(header)
 
+    for index, user in enumerate(users):
+        user_header = f"---------------------------\nUser #{index + 1}\n---------------------------"
+        print(user_header)
+        for text in ["Name", "Username", "Email", "City"]:
+            num_spaces = 15 - len(text)
+            info_text = f"{text}: {" " * num_spaces}{user[text.lower()]}"
+            print(info_text)
+
+    footer = f"=================================\nTotal users retrieved: {len(users)}\n================================="
+    print(footer)
 
 def main():
     api_endpoint = "https://jsonplaceholder.typicode.com/users"
     users = fetch_users(api_endpoint)
     processed = process_users(users)
+    display_users(processed)
+
+if __name__ == "__main__":
+    main()
