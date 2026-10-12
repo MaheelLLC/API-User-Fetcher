@@ -12,5 +12,8 @@ This application retrieves data for 10 users from JSONPlaceholder. Then, it refo
 1. Make a copy of this repository in your local computer.
 2. Move into the repository's directory
 3. Enter in your terminal `python3 -m venv venv`
-4. Enter in your terminal `pip install -r requirements.txt`
-5. Enter in your terminal `python3 main.py`
+4. Enter in your terminal 
+    - Linux/macOS: `source venv/bin/activate`
+    - Windows Powershell: `.\venv\Scripts\Activate.ps1`
+5. Enter in your terminal `pip install -r requirements.txt`
+6. Enter in your terminal `python3 main.py`

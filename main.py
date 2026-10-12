@@ -9,17 +9,35 @@ def fetch_users(api_url : str) -> list | dict | Any:
         response = requests.get(api_url, timeout=5)
         # check if it was successful
         response.raise_for_status()
-        print("Successfully retrieved 10 users!")
+        parsed = response.json()
+        print(f"Successfully retrieved {len(parsed)} users!")
         # return the json parsed response
-        return response.json()
-
+        return parsed
+    except requests.exceptions.Timeout as timeout:
+        print(f"Request timed out: {timeout}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed request: {e}")
+    except requests.exceptions.JSONDecodeError as e:
+        print(f"Failed to parse JSON: {e}")
     except Exception as e:
-        print(f"Fetch Failed: {e}")
+        print(f"{e}")
         raise Exception
 
 def process_users(users: list) -> list:
+    if not users:
+        print("No users were found.")
+        return []
+    
     new_users = []
     for user in users:
+        if "address" not in users or "city" not in users["address"]:
+            print("User has no address or city.")
+            new_users.append({
+                "name" : user["name"],
+                "username" : user["username"],
+                "email" : user["email"]
+            })
+
         new_users.append({
             "name" : user["name"],
             "username" : user["username"],
